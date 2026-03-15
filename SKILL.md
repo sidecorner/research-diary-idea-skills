@@ -137,6 +137,75 @@ Use the template in `references/report-template.md`. Create parent directories a
 
 After saving, tell the user the file path so they can find it easily.
 
+## Step 6: Post-Execution Review and Auto-Improvement
+
+After saving the report, review the entire execution for bugs, errors, and improvement opportunities.
+
+### 6a. Check Script Execution Results
+
+Review the output from all three fetch scripts:
+
+- Were there any errors or warnings in the script output?
+- Did any scripts return 0 results (possible API failure, rate limit, or query issue)?
+- Were there HTTP errors, timeouts, or unexpected exceptions?
+- Did the date range filtering work correctly?
+
+If a script failed silently (no error but sparse/empty data), note it in the report and flag it
+for manual follow-up.
+
+### 6b. Identify Bugs and Improvement Opportunities
+
+Check the following areas:
+
+**Scripts (`scripts/`):**
+- Off-by-one errors in date range calculation
+- Missing or incorrect error handling
+- Queries that consistently return 0 results (consider updating `DIARY_QUERIES`)
+- Encoding issues with non-ASCII characters (especially Qiita Japanese output)
+- Rate limiting: did any API return 429 or similar? Adjust `time.sleep()` if needed
+
+**References (`references/`):**
+- Are subreddit lists in `diary-subreddits.md` still active/relevant?
+- Do HN query terms in `hn-search-guide.md` still surface meaningful results?
+- Is the scoring rubric in `scoring-rubric.md` still well-calibrated?
+
+**SKILL.md:**
+- Were any instructions unclear or missing that caused problems during execution?
+- Should any step be reordered or clarified?
+
+### 6c. Apply Fixes
+
+If bugs or clear improvements are found:
+
+1. Fix script bugs directly in `scripts/`
+2. Update reference files in `references/` if query lists or rubrics need refreshing
+3. Update `SKILL.md` if the workflow itself needs clarification
+4. Update `CLAUDE.md` if the directory structure or usage instructions changed
+
+For each fix, briefly note what was changed and why (inline comment or commit message level).
+
+### 6d. Update Documentation
+
+After any changes, check if the following documents need updating:
+
+- **`README.md`** (if it exists): update usage examples, script options, or output format
+- **`CLAUDE.md`**: update directory structure or usage notes if files were added/removed
+- **`references/`**: update any guide that references outdated behavior
+
+If `README.md` does not exist and meaningful changes were made, create a minimal one covering:
+setup, usage, and output format.
+
+### 6e. Report to User
+
+Tell the user:
+- What was checked
+- What (if anything) was fixed
+- What (if anything) was left as a known limitation with a suggested follow-up
+
+If nothing needed fixing, say so explicitly — "No issues found."
+
+---
+
 ## Notes on quality
 
 - Prefer ideas with evidence from **multiple sources** — cross-platform signal is stronger.
