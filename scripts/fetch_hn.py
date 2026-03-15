@@ -16,6 +16,7 @@ Date range logic:
 
 import argparse
 import json
+import re
 import time
 import urllib.request
 import urllib.parse
@@ -77,9 +78,16 @@ def compute_date_range(target_year: int) -> tuple[int, int]:
 
 
 def is_diary_relevant(title: str) -> bool:
-    """Check if a post title actually relates to diary/journaling topics."""
+    """Check if a post title actually relates to diary/journaling topics.
+
+    Uses word-boundary matching to avoid false positives like
+    'journalism' matching 'journal'.
+    """
     title_lower = title.lower()
-    return any(kw in title_lower for kw in DIARY_RELEVANCE_KEYWORDS)
+    return any(
+        re.search(r"\b" + re.escape(kw) + r"\b", title_lower)
+        for kw in DIARY_RELEVANCE_KEYWORDS
+    )
 
 
 def fetch_hn_posts(query: str, year_start: int, year_end: int,

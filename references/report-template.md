@@ -1,7 +1,7 @@
 # Report Template
 
 Use this template when generating the research output file.
-Save to: `reports/{TARGET_YEAR}/{YYYY-MM-DD}/{HH-MM-SS}.md`
+Save to: `reports/{TARGET_YEAR}/{YYYYMMDD}/{HHMMSS}.md`
 
 ---
 
